@@ -1,0 +1,149 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'project/js/bootstrap/dist/css/bootstrap.min.css' %}" type='text/css'>
+<link rel="stylesheet" href="{% static 'project/js/bootstrap-tour-0.10.3/build/css/bootstrap-tour-standalone.css' %}" type='text/css'>
+<body style='height:100%'>
+<div class='container clear-top' style='padding-bottom:150px'>
+    <h1 class='text-center' style='font-family:"Monteserrat"'>Twitter Analysis Tool</h1>
+    <div id='user' class='jumbotron text-center center-block'>
+        {% for dude in tweets|slice:":1" %}
+                <a href="https://www.twitter.com/{{ dude.user.screen_name }}/status/{{ dude.id }}" target="_blank">
+                <img src="{{ dude.user.profile_image_url }}" width="100" height="100" class='img-thumbnail' style='margin-left:auto; margin-right:auto'/>
+                <h2>{{ dude.user.name }}<br/><span style='font-size: 20px;'>@{{ dude.user.screen_name }}</span></h2>
+                </a>
+        {% endfor %}
+    </div>
+    {% load staticfiles %}
+    <div class='row center-block'> 
+        <h3 id='tagcloud' class='text-center'> Tag Cloud <h3>
+        <img src = "{% static 'project/images/image.jpg' %}" style = "width:500; height:300" class='img-rounded center-block'/>
+    </div>
+    <div id="chart_container" style="width: 550px; height: 400px; margin: 0 auto" class='row center-block'>
+    </div>
+    <div id='word' class='row center-block'>
+        <h3 class='text-center'> Top 10 word co-occurrences in your tweets</h3>
+        <br>
+        <img src = "{% static 'project/images/myfig.png' %}" style = "width:500; height:500" class='center-block img-rounded'/>
+    </div>
+     <div id='network' class='row center-block'>
+        <h3 class='text-center'> Network graph of your friends and followers</h3>
+        <br>
+        <img src = "{% static 'project/images/mygraph.png' %}" style = "width:500; height:500" class='center-block img-rounded'/>
+    </div>
+</div>
+ <footer style="position:relative; margin-top:-50px; height:50px; clear:both; padding-top:10px;"></footer>
+ </body>
+<!--javascript for charts
+-->
+{% load staticfiles %}
+<script src="{% static 'project/js/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'project/js/highcharts/highcharts.js' %}"></script>
+<script src="{% static 'project/js/highcharts/modules/exporting.js' %}"></script>
+<script src="{% static 'project/js/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'project/js/bootstrap-tour-0.10.3/build/js/bootstrap-tour-standalone.js' %}"></script>
+
+
+<script>
+$(document).ready(function() {  
+   
+   var chart = {
+      type: 'column'
+   };
+   var title = {
+      text: 'Weekly tweets statistics'   
+   };
+   var subtitle = {
+      text: '@{{user_handle}}'  
+   };
+   var xAxis = {
+      categories: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+      crosshair: true
+   };
+   var yAxis = {
+      min: 0,
+      title: {
+         text: 'Number of Tweets'         
+      }      
+   };
+   var tooltip = {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+         '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+   };
+   var plotOptions = {
+      column: {
+         pointPadding: 0.2,
+         borderWidth: 0
+      }
+   };  
+   var credits = {
+      enabled: false
+   };
+   
+   var series= [{
+        name: '@{{user_handle}}',
+            data: [{{ sun }}, {{ mon }}, {{ tue }}, {{ wed }}, {{ thu }}, {{ fri }}, {{ sat }}]
+   }];     
+      
+   var json = {};   
+   json.chart = chart; 
+   json.title = title;   
+   json.subtitle = subtitle; 
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;  
+   json.series = series;
+   json.plotOptions = plotOptions;  
+   json.credits = credits;
+   $('#chart_container').highcharts(json);
+  
+});
+</script>
+<script type="text/javascript">
+    $(function () {
+        var tour = new Tour({
+            name: 'sjdln',
+            steps: [
+                {
+                    path:"/process/result",
+                    element: "#user",
+                    placement: "bottom",
+                    title: "Your twitter analysis",
+                    content: "Below are some analytics related to your twitter handle and your activity."
+                },
+                {
+                    path:"/process/result",
+                    element: "#tagcloud",
+                    placement: "bottom",
+                    title: "Your tag-cloud",
+                    content: "This tag-cloud contains your top 50 most frequently used words in your tweets."
+                },
+                {
+                    path:"/process/result",
+                    element: "#chart_container",
+                    title: "Your weekly tweet statistics",
+                    placement: "bottom",
+                    content: "This graph shows how many time you tweet on a particular day of the week."
+                },
+                {
+                    path:"/process/result",
+                    element: "#word",
+                    title: "Word co-occurrences graph",
+                    placement: "bottom",
+                    content: "This graph shows how many time 2 words appear together in your tweets. This helps in better understanding of your tweets sentiments."
+                },
+                {
+                    path:"/process/result",
+                    element: "#network",
+                    title: "Your network graph",
+                    placement: "bottom",
+                    content: "This graph shows you your network graph. This network graph is between you, your followers and your friends. Friends are marked as red while followers are marked as black."
+                }
+            ]
+        });
+        tour.init();
+        tour.start(true);1
+    });
+</script>

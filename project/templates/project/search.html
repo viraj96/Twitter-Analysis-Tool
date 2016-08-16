@@ -1,0 +1,53 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'project/js/bootstrap/dist/css/bootstrap.min.css' %}" type='text/css'>
+<link rel="stylesheet" href="{% static 'project/js/bootstrap-tour-0.10.3/build/css/bootstrap-tour-standalone.css' %}" type='text/css'>
+<div class='container text-center'>
+	<div class='row'>
+		<h1 id='title' class='text-center' style='font-family:"Monteserrat"'>Twitter Analysis Tool</h1>
+		<p class='text-center'>Enter your twitter handle</p> 
+	</div>
+	<div class='row'>
+		<br>
+		<form id='username' method="POST" action="/process/search">
+			{% csrf_token %}
+			{{ form }}
+			<button type="submit" class="btn btn-primary" style='margin-left:20px;'>Enter</button>
+		</form>
+	</div>
+</div>
+{% load staticfiles %}
+<script src="{% static 'project/js/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'project/js/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'project/js/bootstrap-tour-0.10.3/build/js/bootstrap-tour-standalone.js' %}"></script>
+<script>
+    $(function () {
+        var tour = new Tour({
+            name: 'ldvn',
+            steps: [
+                {
+                	path:"/process/search",
+                    element: "#title",
+                    placement: "bottom",
+                    title: "Welcome to Twitter Analysis Tool!",
+                    content: "This tool provides some statistics of your twitter timeline."	
+                },
+                {
+                	path:"/process/search",
+                    element: "#username",
+                    placement: "bottom",
+                    title: "User handle",
+                    content: "Enter your twitter user handle and let the application do it's charm."
+                },
+                {
+                	path:"/process/result",
+                	element: "#user",
+                	placement: "bottom",
+                	title: "Your twitter analysis",
+                	content: "Below are some analytics related to your twitter handle and your activity."
+                }
+            ]
+        });
+        tour.init();
+        tour.start(true);
+    });
+</script>
