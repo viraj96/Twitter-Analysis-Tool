@@ -14,15 +14,15 @@ import matplotlib.pyplot as plt
 
 user_handle = ''
 mon = tue = wed = thu = fri = sat = sun = 0
-api = twitter.Api(consumer_key='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-	                  consumer_secret='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-                      access_token_key='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-                      access_token_secret='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+api = twitter.Api(consumer_key='*************************************',
+	                  consumer_secret='*************************************',
+                      access_token_key='*************************************',
+                      access_token_secret='*************************************')
 def rotate_keys():
-	consumer_key1='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-	consumer_secret1='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-	access_token_key1='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-	access_token_secret1='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+	consumer_key1='*************************************'
+	consumer_secret1='*************************************'
+	access_token_key1='*************************************'
+	access_token_secret1='*************************************'
 	global api
 	api = twitter.Api(consumer_key=consumer_key1,
 	                  consumer_secret=consumer_secret1,
